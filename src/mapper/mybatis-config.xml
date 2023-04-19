@@ -2,10 +2,18 @@
 <!-- db접속 환경설정 -->
 <!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
+<configuration> <!-- root tag -->
 	<properties resource="mapper/mybatis.properties" />
+	
+	<typeAliases>
+		<typeAlias type="main.Member" alias="Member"></typeAlias>
+		<typeAlias type="main.Student" alias="Student"></typeAlias>
+	</typeAliases>
+	
+	<!-- environments = connection 객체 : 환경설정. default값이 environment와 같아야함. -->
 	<environments default="development">
 		<environment id="development">
+			<!-- db에서 transaction(commit, rollback) 관리 -->
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
 				<property name="driver" value="${driver}" />
@@ -15,7 +23,10 @@
 			</dataSource>
 		</environment>
 	</environments>
+	<!-- sql 구문을 가진 파일 목록 -->
 	<mappers>
 		<mapper resource="mapper/MemberMapper1.xml" />
+		<mapper resource="mapper/StudentMapper1.xml" />
+		<mapper resource="mapper/StudentMapper2.xml" />
 	</mappers>
 </configuration>

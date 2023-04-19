@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student2"> 
+	<select id="select1" resultType="Student" parameterType="map">
+		select * from student
+		<where>
+			<if test="grade != null">grade = #{grade}</if> <!-- test하는 grade는 map에 있는 key. 그럼 grade null 이 아니라 map의 null을 검사해야하는거 아님? -->
+			<if test="studno != null">studno = #{studno}</if>
+			<if test="height != null">height >= #{height}</if>			
+		</where>
+	</select>
+	<!-- 동적 태그 방식
+		1. map = null : select * from student 문장 실행
+		2. map = ("grade",1) : select * from student where grade=1 문장 실행
+		3. map = ("studno", 980111) : select * from student where studno=980111 
+		
+		map=("grade",1),("height",180) : select * from student where grade=1 height>=180 ===> error
+	 -->
+	 <select id="select2" resultType="Student" parameterType="map">
+		select * from student
+		<choose>
+			<when test="grade != null and height!=null">where grade = #{grade} and height >= #{height}</when>
+			<when test="grade != null">where grade = #{grade}</when>
+			<when test="studno != null">where studno = #{studno}</when>
+			<when test="height != null">where height >= #{height}</when>
+		</choose>
+	</select>
+	<select id="select3" resultType="Student" parameterType="map">
+		select * from student
+		<trim prefix="where" prefixOverrides="AND || OR"> <!-- 맨 앞에 있는 and나 or 접두사를 where로 바꿈 -->
+			<if test="grade != null"> and grade = #{grade}</if> 
+			<if test="weight != null"> and weight >= #{weight}</if>
+			<if test="height != null"> and height >= #{height}</if>	
+		</trim>
+	</select>
+	
+	<select id="select4" resultType="Student" parameterType="map">
+		select * from student
+		<if test="datas != null">
+			where ${column} in <!-- #{column} => 'major1' => x -->
+				<foreach collection="datas" item="d" separator="," open="(" close=")"> <!-- separator != split. separator는 ,로 구분하겠다는 의미 -->
+					#{d}
+				</foreach>
+		</if>
+	</select>
+	<!-- foreach 태그의 속성
+		collection : collection 객체를 가진 키이름. 배열도 됨
+		item : collection 내부의 요소 1개
+		separator : 구분자
+		open : 반복 시작할 때 표시되는 문자
+		 -->
+</mapper>

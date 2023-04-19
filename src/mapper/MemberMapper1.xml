@@ -2,8 +2,23 @@
 <!-- sql 구문 저장(mapper 파일) -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="member">
-	<select id="count" resultType="int">
+<mapper namespace="member"> <!-- xml마다 namespace설정할 수 있음.  -->
+	<select id="count" resultType="int"> <!-- member 밑에 count(member.count)/ int 아니고 Integer 객체임 -->
 		select count(*) from member
+	</select>
+	<select id="list" resultType="Member"> <!-- main에 Member객체에서 "컬럼명과 같은" set property가 호출됨 setter. 컬럼명이랑 다르면 alias 쓰면됨 -->
+		select * from member
+	</select>
+	<select id="selectId" resultType="Member" parameterType="string"> <!-- resultType=main.Member로 써야되는데 config.xml에서 alias로 설정함. -->
+		select * from member where id=#{value}
+	</select>
+	<select id="selectName" resultType="Member" parameterType="string">
+		select * from member where name like #{value} <!-- #{value} : value의 자료형이 문자열이면 '값'으로 처리, 숫자면 값 -->
+	</select>
+	<select id="selectName2" resultType="Member" parameterType="string">
+		select * from member where name like '%${value}%'  <!-- ${value} : 값만 치환. ''없음 -->
+	</select>
+	<select id="selectNameGender" resultType="Member" parameterType="map">
+		select * from member where name like '%${name}%' and gender=#{gender} <!-- #{map 객체의 key} => 'map 객체의 value 값' -->
 	</select>
 </mapper>

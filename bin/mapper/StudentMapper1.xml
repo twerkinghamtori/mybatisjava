@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student"> 
+	<select id="count" resultType="int">
+		select count(*) from student
+	</select>
+	<select id="list" resultType="Student"> 
+		select * from student
+	</select>
+	<select id="selectGrade" resultType="Student" parameterType="int"> 
+		select * from student where grade=#{value}
+	</select>
+	<select id="selectName" resultType="Student" parameterType="string">
+		select * from student where name like #{value}
+	</select>
+	<select id="selectGradeGender" resultType="Student" parameterType="map">
+		select * from student where grade=#{grade} and SUBSTR(jumin,7,1)=#{jumin}
+	</select>
+	<insert id="insert" parameterType="Student">
+		insert into student (studno, name, id, jumin, grade, major1) values (#{studno}, #{name}, #{id}, #{jumin}, #{grade}, #{major1}) <!-- st(Student객체) 안에 있는 get property를 이용해서 값을 가져올 수 있음. -->
+	</insert>
+	<select id="selectNo" resultType="Student" parameterType="int">
+		select * from student where studno=#{value}
+	</select>
+	<update id="update" parameterType="Student">
+		update student set grade=#{grade}, height=#{height}, weight=#{weight}, profno=#{profno} where studno=#{studno}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from student where studno=#{value}
+	</delete>
+</mapper>
