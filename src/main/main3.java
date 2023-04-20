@@ -11,7 +11,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-
+//동적 Query
 public class main3 {
 	private final static SqlSessionFactory sqlMap;
 	static {
